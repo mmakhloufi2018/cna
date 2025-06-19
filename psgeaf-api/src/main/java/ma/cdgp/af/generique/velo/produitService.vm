@@ -1,0 +1,22 @@
+package ma.rcar.rsu.service;
+
+import java.sql.SQLException;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import ma.rcar.rsu.dto.InfoDemandeDto;
+import ma.rcar.rsu.repository.${repo};
+
+@Service
+public class ${class} extends ProduitService {
+
+	@Autowired
+	${repo} repo;
+
+	@Override
+	InfoDemandeDto getClient(String cin, Long id) throws SQLException {
+		return repo.getInfo(id, cin);
+	}
+
+}

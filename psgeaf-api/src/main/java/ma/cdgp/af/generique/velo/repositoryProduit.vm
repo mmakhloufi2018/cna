@@ -1,0 +1,51 @@
+package ma.rcar.rsu.repository;
+
+import java.sql.SQLException;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.MapHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.jdbc.core.support.JdbcDaoSupport;
+import org.springframework.stereotype.Repository;
+
+import ma.rcar.rsu.SqlQueries;
+import ma.rcar.rsu.dto.InfoDemandeDto;
+import ma.rcar.rsu.utils.DataMapper;
+
+@Repository
+public class ${class} extends JdbcDaoSupport {
+	@Autowired
+	@Qualifier("${dataSource}")
+	DataSource dataSource;
+
+	@Autowired
+	private SqlQueries queries;
+	
+
+	
+	Logger log = LoggerFactory.getLogger(RcarRepository.class);
+	public ${class}(DataSource dataSource) {
+		setDataSource(dataSource);
+	}
+
+	public InfoDemandeDto getInfo(Long idCI, String cin) throws SQLException {
+
+		String sql = queries.getQueries().get("${query}");
+
+		QueryRunner queryRunner = new QueryRunner(this.dataSource);
+		Object[] index = new Object[1];
+		index[0] = cin;
+		Map<String, Object> row = queryRunner.query(sql, new MapHandler(), index);
+		DataMapper<InfoDemandeDto> mapper = new DataMapper<>(InfoDemandeDto.class);
+
+		return mapper.map(row);
+
+	}
+
+}

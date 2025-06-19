@@ -1,0 +1,108 @@
+package ${domaine}.controller;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+
+import ${domaine}.dto.${dto};
+import ${domaine}.entity.${entity};
+import ${domaine}.repository.${repository};
+import ${domaine}.exception.InternalServerException;
+import ${domaine}.exception.ObjectNotFoundException;
+
+@RestController
+@RequestMapping("/${instance}s")
+@Api("Service pour la création, la récupération et la recherche.")
+public class ${class} {
+
+	@Autowired
+	${repository} repository;
+
+	@GetMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Renvoie l'entité identifiée par son id", nickname = "getOne${entity}")
+	public ${dto} get(@PathVariable("id") String id) throws ObjectNotFoundException {
+
+		Long idL = getIdLong(id);
+		${entity} entity = repository.findById(idL).orElse(null);
+		if (entity != null) {
+			return ${dto}.from(entity);
+		} else {
+			throw new ObjectNotFoundException("NF", "Element non trouvé.");
+		}
+	}
+
+	@GetMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Renvoie la liste des entités.", nickname = "getAll${entity}s")
+	public List<${dto}> getAll() {
+
+		return repository.findAll().stream().map(${dto}::from).collect(Collectors.toList());
+	}
+
+	@PostMapping(produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Enregistre une nouvelle entité.", nickname = "save${entity}")
+	public ${dto} save(@RequestBody ${dto} dto) throws InternalServerException {
+
+		try {
+			${entity} entity = repository.save(${dto}.to(dto));
+			return ${dto}.from(entity);
+		} catch (Exception e) {
+			throw new InternalServerException("IE", "Erreur lors de la création de l'objet");
+		}
+	}
+
+	@PutMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "met à jour une entité.", nickname = "update${entity}")
+	public ${dto} update(@PathVariable("id") String id, @RequestBody ${dto} dto) {
+
+		Long idL = getIdLong(id);
+		${entity} entity = repository.findById(idL).orElse(null);
+		if (entity == null) {
+			throw new ObjectNotFoundException("NF", "Element non trouvé.");
+		}
+		entity = repository.save(${dto}.to(dto));
+		return ${dto}.from(entity);
+	}
+
+	@DeleteMapping(value = "/{id}", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Supprime une entité.", nickname = "delete${entity}")
+	public void delete(@PathVariable("id") String id) {
+
+		repository.deleteById(getIdLong(id));
+	}
+
+	@GetMapping(value = "search/{label}/", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ApiOperation(value = "Renvoie une entité identifiée par son label", nickname = "get${entity}ByLabel")
+	public List<${dto}> get${entity}ByLabel(@PathVariable("label") String label) {
+
+		List<${dto}> entities = repository.findByLabel(label).stream().map(${dto}::from)
+				.collect(Collectors.toList());
+		if (entities != null && !entities.isEmpty()) {
+			return entities;
+		} else {
+			throw new ObjectNotFoundException("NF", "Element non trouvé.");
+		}
+	}
+
+	private Long getIdLong(String id) {
+		Long idL = null;
+		try {
+			idL = new Long(id);
+		} catch (Exception e) {
+			throw new IllegalArgumentException("Identifiant non valide.");
+		}
+		return idL;
+	}
+}

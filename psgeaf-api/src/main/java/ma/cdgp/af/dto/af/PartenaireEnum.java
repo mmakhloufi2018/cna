@@ -1,0 +1,23 @@
+package ma.cdgp.af.dto.af;
+
+public enum PartenaireEnum {
+	TGR,
+	ANCFCC,
+	DGI,
+	COLLECT,
+	HABITAT,
+	ROKHAS,
+	CNRA,
+	ALEM,
+	REPONSES,
+	ANCFCC_ETAT_BIEN,
+	ANCFCC_AFFECTATION_BIEN,
+	CNSS,
+	MASSAR,
+	MI,
+	CMR,
+	SANTE,
+
+	RSU,
+	NOTIFICATION_RSU
+}

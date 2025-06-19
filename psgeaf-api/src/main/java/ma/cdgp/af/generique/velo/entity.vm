@@ -1,0 +1,71 @@
+package ${domaine}.entity;
+
+import java.io.Serializable;
+//import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+//import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+//import javax.persistence.OneToMany;
+
+@Entity
+public class ${class} implements Serializable {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	Long id;
+
+	@Column(name = "CODE")
+	private String code;
+
+	@Column(name = "LABEL")
+	private String label;
+
+//	@Column(nullable = true)
+//	private String field;
+		
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "${instance}")
+//	private List<Others> listOthers;
+
+//	@ManyToOne
+//	private Other other;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
+	public ${class}() {
+		super();
+	}
+	
+	public ${class}(Long id, String code, String label) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.label = label;
+	}	
+}

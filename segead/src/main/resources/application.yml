@@ -1,0 +1,31 @@
+server.port: 7006
+
+spring:
+  datasource:
+    
+    url: jdbc:oracle:thin:@172.16.5.21:1521:FNDEV
+    username: ESGEAF
+    password: T2Zk@_LCvTz8*_ct0=%yTjLe
+    driverClassName: oracle.jdbc.driver.OracleDriver
+    validation-query: SELECT 1 from dual
+    test-on-borrow: true
+    test-on-connect: true
+    test-while-idle: true
+    tomcat.initial-size: 100
+    tomcat.min-idle: 100
+    validation-interval: 300000 # 30s 
+    hikari:
+      connection-timeout: 600000
+      maximum-pool-size: 500
+      max-lifetime: 1800000
+      minimum-idle: 20
+      validation-timeout: 300000
+      idle-timeout: 60000
+  jpa:
+     database: oracle
+     hibernate:
+        ddl-auto: update
+     show_sql: false
+     use_sql_comments: true
+     format_sql: true
+

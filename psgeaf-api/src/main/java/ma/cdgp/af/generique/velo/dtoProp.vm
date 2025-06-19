@@ -1,0 +1,79 @@
+package ${domaine}.dto;
+
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import ${domaine}.entity.${entity};
+
+
+@JsonInclude(Include.NON_NULL)
+public class ${class} implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+		
+#foreach( $property in $properties )
+#if("id"== $property.fieldName)
+	private String id;
+#else
+	private $property.fieldType $property.fieldName;
+#end
+#end 
+
+	public ${class}() {
+		super();
+	}
+	
+	public ${class}(#foreach($property in $properties)#if("id"!= $property.fieldName) $property.fieldType $property.fieldName#if($velocityCount < ${properties.size()}), #end#end#end) {
+		super();
+#foreach ($property in $properties) 
+#if("id"!= $property.fieldName)
+	this.$property.fieldName = $property.fieldName;
+#end
+	#end  
+}     
+	
+	public ${class}(#foreach($property in $properties)#if("id"== $property.fieldName)String id,#else$property.fieldType $property.fieldName#if($velocityCount < ${properties.size()}), #end#end#end) {
+		super();
+	#foreach ($property in $properties) 
+	this.$property.fieldName = $property.fieldName;
+	#end  
+}     
+	
+#foreach( $property in $properties )
+#if("id"== $property.fieldName)
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+#else
+	public ${property.fieldType} get${property.getGetterAndSetterField()}() {
+		return this.${property.fieldName};
+	}
+	 
+	public void set${property.getGetterAndSetterField()}(${property.fieldType} ${property.fieldName}) {
+		this.${property.fieldName} = ${property.fieldName};
+	}
+#end  
+#end
+
+	public static ${class} from(${entity} in) {
+		if (in == null) {
+			return null;
+		}
+		${class} out = new ${class}(#foreach($property in $properties)#if("id"== $property.fieldName)in.get${property.getGetterAndSetterField()}() != null ? in.get${property.getGetterAndSetterField()}().toString() : null#else, in.get${property.getGetterAndSetterField()}()#end#end);
+		return out;
+	}
+
+	public static ${entity} to(${class} in) {
+		if (in == null) {
+			return null;
+		}
+		${entity} out = new ${entity}(#foreach($property in $properties)#if("id"== $property.fieldName)in.get${property.getGetterAndSetterField()}() != null ? new Long(in.get${property.getGetterAndSetterField()}().toString()) : null#else, in.get${property.getGetterAndSetterField()}()#end#end);
+		return out;
+	}
+}

@@ -1,0 +1,111 @@
+package ${domaine};
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import ma.pp.AbstractTest;
+
+import ${domaine}.dto.${dto};
+
+public class ${class} extends AbstractTest {
+
+	@Override
+	@Before
+	public void setUp() {
+		super.setUp();
+	}
+
+	@Test
+	public void get${dto}() throws Exception {
+		String uri = "/${instance}s/10";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+		String content = mvcResult.getResponse().getContentAsString();
+		${dto} dto = super.mapFromJson(content, ${dto}.class);
+		assertTrue(dto != null && "10".equals(dto.getId()));
+	}
+
+	@Test
+	public void get${dto}sList() throws Exception {
+		String uri = "/${instance}s";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get(uri).accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+		String content = mvcResult.getResponse().getContentAsString();
+		${dto}[] list = super.mapFromJson(content, ${dto}[].class);
+		assertTrue(list.length > 0);
+	}
+
+	@Test
+	public void create${dto}() throws Exception {
+		String uri = "/${instance}s/";
+		${dto} dto = new ${dto}();
+		dto.setCode("CODE ${entity}");
+		dto.setLabel("Label ${entity}");
+		String inputJson = super.mapToJson(dto);
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.post(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+	}
+
+	@Test
+	public void update${dto}() throws Exception {
+		String uri = "/${instance}s/30";
+		${dto} dto = new ${dto}();
+		dto.setId("30");
+		dto.setCode("CODE 3");
+		dto.setLabel("Label 3");
+		String inputJson = super.mapToJson(dto);
+		MvcResult mvcResult = mvc.perform(
+				MockMvcRequestBuilders.put(uri).contentType(MediaType.APPLICATION_JSON_VALUE).content(inputJson))
+				.andReturn();
+
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+	}
+
+	@Test
+	public void delete${dto}() throws Exception {
+		String uri = "/${instance}s/20";
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.delete(uri)).andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(200, status);
+	}
+
+	@Test
+	public void get${dto}_caseInvalideId() throws Exception {
+		String uri = "/${instance}s/toto";
+		MvcResult mvcResult = mvc
+				.perform(MockMvcRequestBuilders.get(uri).param("id", "10").accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(400, status);
+		assertEquals(mvcResult.getResponse().getContentAsString(), "");
+
+	}
+
+	@Test
+	public void get${dto}_caseNotFound() throws Exception {
+		String uri = "/${instance}s/666";
+		MvcResult mvcResult = mvc
+				.perform(MockMvcRequestBuilders.get(uri).param("id", "10").accept(MediaType.APPLICATION_JSON_VALUE))
+				.andReturn();
+		int status = mvcResult.getResponse().getStatus();
+		assertEquals(404, status);
+
+	}
+}

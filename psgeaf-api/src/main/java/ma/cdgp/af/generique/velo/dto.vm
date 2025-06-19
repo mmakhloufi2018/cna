@@ -1,0 +1,80 @@
+package ${domaine}.dto;
+
+import java.io.Serializable;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import ${domaine}.entity.${entity};
+
+
+@JsonInclude(Include.NON_NULL)
+public class ${class} implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
+	private String id;
+
+	private String code;
+
+	private String label;
+
+	public ${class}() {
+		super();
+	}
+
+	public ${class}(String code, String label) {
+		super();
+		this.code = code;
+		this.label = label;
+	}
+
+	public ${class}(String id, String code, String label) {
+		super();
+		this.id = id;
+		this.code = code;
+		this.label = label;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
+
+	public String getLabel() {
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	public static ${class} from(${entity} in) {
+		if (in == null) {
+			return null;
+		}
+		${class} out = new ${class}(in.getId() != null ? in.getId().toString() : null, in.getCode(),
+				in.getLabel());
+		return out;
+	}
+
+	public static ${entity} to(${class} in) {
+		if (in == null) {
+			return null;
+		}
+		${entity} out = new ${entity}(in.getId() != null ? new Long(in.getId().toString()) : null, in.getCode(),
+				in.getLabel());
+		return out;
+	}
+}

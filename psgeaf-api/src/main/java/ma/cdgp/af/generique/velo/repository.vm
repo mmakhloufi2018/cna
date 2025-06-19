@@ -1,0 +1,17 @@
+package ${domaine}.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import ${domaine}.entity.${entity};
+
+@Repository
+public interface ${class} extends JpaRepository<${entity}, Long> {
+#foreach( $property in $properties )
+#if($property.fieldName != "id")
+	List<${entity}> findBy${property.getGetterAndSetterField()}(${property.fieldType} ${property.fieldName});
+#end 
+#end 
+}

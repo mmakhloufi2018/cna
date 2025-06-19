@@ -1,0 +1,60 @@
+package ${domaine}.entity;
+
+import java.io.Serializable;
+//import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+//import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+//import javax.persistence.OneToMany;
+
+@Entity
+public class ${class} implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+	
+#foreach( $property in $properties )
+
+	#if($property.fieldName == "id")@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	#else
+@Column(name = "${property.getTableField()}")
+	#end	
+private $property.fieldType $property.fieldName;
+#end 
+
+//	@OneToMany(fetch = FetchType.LAZY, mappedBy = "instance")
+//	private Set<Other> others;
+
+//	@ManyToOne
+//  @JoinColumn(name="OTHER_ID", nullable=false)
+//	private Other other;
+
+//	@ManyToMany(mappedBy = "instances")
+//	private Set<Other> others;
+	
+	public ${class}() {
+		super();
+	}
+	
+	public ${class}(#foreach($property in $properties)$property.fieldType $property.fieldName#if($velocityCount < ${properties.size()}), #end#end) {
+		super();
+	#foreach ($property in $properties) 
+	this.$property.fieldName = $property.fieldName;
+	#end  
+}     
+	
+#foreach( $property in $properties )
+	public ${property.fieldType} get${property.getGetterAndSetterField()}() {
+		return this.${property.fieldName};
+	}
+	 
+	public void set${property.getGetterAndSetterField()}(${property.fieldType} ${property.fieldName}) {
+		this.${property.fieldName} = ${property.fieldName};
+	}
+	 
+#end
+}
