@@ -37,10 +37,10 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          cd psgeaf-file
+          cd segead
           mvn -B verify \
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-              -Dsonar.projectKey=psgeaf-file \
-              -Dsonar.projectName='psgeaf-file' \
+              -Dsonar.projectKey=segead \
+              -Dsonar.projectName='segead' \
               -Dsonar.host.url=$SONAR_HOST_URL \
               -Dsonar.login=$SONAR_TOKEN
