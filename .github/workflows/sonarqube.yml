@@ -40,7 +40,7 @@ jobs:
           cd psgeaf-file
           mvn -B verify \
               org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-              -Dsonar.projectKey=alexsys \
-              -Dsonar.projectName='alexsys' \
+              -Dsonar.projectKey=psgeaf-file \
+              -Dsonar.projectName='psgeaf-file' \
               -Dsonar.host.url=$SONAR_HOST_URL \
               -Dsonar.login=$SONAR_TOKEN
