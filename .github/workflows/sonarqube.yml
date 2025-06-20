@@ -9,38 +9,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ──────────────── Checkout du code ────────────────
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0        # nécessaire pour Sonar
+          fetch-depth: 0
 
-      # ──────────────── Java + cache Maven ─────────────
-      # setup-java v4 sait déjà gérer le cache Maven automatiquement
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          distribution: temurin # ou zulu, corretto, etc.
+          distribution: temurin
           java-version: '17'
-          cache: maven          # active le cache ~/.m2 sans action/cache
+          cache: maven
 
-      # ──────────────── Cache SonarQube ────────────────
       - name: Cache SonarQube packages
-        uses: actions/cache@v4      # ⬅️  v4 au lieu de v1
+        uses: actions/cache@v4
         with:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-sonar-
 
-      # ──────────────── Build + analyse SonarQube ─────
       - name: Build and analyze
+        working-directory: psgeaf-file
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
         run: |
-          cd psgeaf-file
-          mvn -B verify \
-              org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
-              -Dsonar.projectKey=alexsys \
-              -Dsonar.projectName='alexsys' \
-              -Dsonar.host.url=$SONAR_HOST_URL \
-              -Dsonar.login=$SONAR_TOKEN
+          mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar \
+            -Dsonar.projectKey=alexsys \
+            -Dsonar.projectName='alexsys' \
+            -Dsonar.host.url=$SONAR_HOST_URL \
+            -Dsonar.login=$SONAR_TOKEN
+
+      - name: Lien vers SonarQube
+        run: echo "::notice title=SonarQube::Analyse disponible 👉 ${{ secrets.SONAR_HOST_URL }}/dashboard?id=alexsys"
