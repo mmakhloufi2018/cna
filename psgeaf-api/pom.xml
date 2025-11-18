@@ -5,7 +5,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.5.4</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ma.cdgp</groupId>
 	<artifactId>cdg-ps-af</artifactId>
@@ -59,7 +59,7 @@
 		<dependency>
 		    <groupId>io.github.openfeign</groupId>
 		    <artifactId>feign-okhttp</artifactId>
-		    <version>10.12</version> <!-- Remplacez par la dernière version disponible -->
+		    <version>11.7</version> <!-- Remplacez par la dernière version disponible -->
 		</dependency>
 
 		<dependency>
